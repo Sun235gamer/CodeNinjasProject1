@@ -26,7 +26,7 @@ def create_main_menu(manager, play_function):
     play_button = arcade.gui.UIFlatButton(text="play")
     @play_button.event("on_click")
     def on_click_play(event):
-        play_function
+       play_function()
 
     play_button_container = arcade.gui.UIPadding(
         child=play_button, 

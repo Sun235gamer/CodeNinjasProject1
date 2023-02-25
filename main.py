@@ -12,23 +12,25 @@ class GameWindow(arcade.Window):
         super().__init__(width=SCREEN_WIDTH, height=SCREEN_HEIGHT)
 
         # create the UI manager
-        self.manager = arcade.gui.UIManager()
+        self.main_menu_manager = arcade.gui.UIManager()
         self.play_manager = arcade.gui.UIManager()
 
-        create_main_menu(self.manager, play_function=self.play)
+        create_main_menu(self.main_menu_manager, play_function=self.play)
         create_play_menu(self.play_manager)
 
-        self.current_menu = self.manager
-        self.manager.enable()
+        self.current_menu = self.main_menu_manager
+        self.main_menu_manager.enable()
 
     def on_draw(self):
         self.clear()
-        self.manager.draw()
+        self.current_menu.draw()
 
     def select_menu(self, manager):
         self.current_menu.disable()
         self.current_menu = manager
         self.current_menu.enable()
+
+        print("finish selecting menu")
 
     def play(self):
         self.select_menu(self.play_manager)
