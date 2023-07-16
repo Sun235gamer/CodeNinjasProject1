@@ -23,18 +23,31 @@ def display_result(correct : bool):
     else:
         print("That is very incorrect")
     
+class QuestionState:
+    def __init__(self) -> None:
+        self.new_question()
+    def new_question(self):
+        self.question_answer_pair = random.choice(questions)
+    def get_question_text(self):
+        return self.question_answer_pair[0]
+    
+
+
+    def get_answer_text(self):
+        return self.question_answer_pair[1]
+
+
 
 
 
 def create_play_menu(manager, display_correct, display_incorrect):
     vertical_box = arcade.gui.UIBoxLayout()
 
-    chosen_question = random.choice(questions)
-    question_text = chosen_question[0]
-    answer_text = chosen_question[0]
+    question_state = QuestionState()
+    
 
     question = arcade.gui.UITextArea(
-        text=question_text
+        text=question_state.get_question_text()
     )
 
     input_box = arcade.gui.UIInputText(
@@ -47,13 +60,14 @@ def create_play_menu(manager, display_correct, display_incorrect):
     
     @submit_button.event("on_click")
     def on_click_submit(event):
-        is_correct = input_box.text.lower() == answer_text.lower()
+        is_correct = input_box.text.lower() == question_state.get_answer_text().lower()
         print(is_correct)
         print(f"got: {input_box.text}")
         display_result(is_correct)
 
         if is_correct:
             display_correct()
+            question_state.new_question()
         else:
             display_incorrect()
           
