@@ -1,16 +1,32 @@
 import arcade
 import arcade.gui
 import random
+from asset_manager import Assets
+import time
+import threading
 
 questions = [
     ("Before people discovered that Mount Everest was the tallest mountain, what was the tallest mountain?",
-     "Mt.Everest"),
+     "Trick Question"),
     ("are you sus?", "yes"), 
     ("why are you the imposter", "i just am")
 ]
 
+def display_result(correct : bool):
+   
+    sound = Assets.sounds["drumroll"]
+    sound.play()
 
-def create_play_menu(manager):
+    time.sleep(sound.get_length())
+    if correct:
+        print("correct!!")
+    else:
+        print("That is very incorrect")
+    
+
+
+
+def create_play_menu(manager, display_correct, display_incorrect):
     vertical_box = arcade.gui.UIBoxLayout()
 
     chosen_question = random.choice(questions)
@@ -22,20 +38,30 @@ def create_play_menu(manager):
     )
 
     input_box = arcade.gui.UIInputText(
-        text="I AM OVER HERE",
+        text="Click on me to answer",
         text_color=arcade.color.WHITE,
         width=400
     )
 
-    submit_button = arcade.gui.UIFlatButton()
+    submit_button = arcade.gui.UIFlatButton(text="Submit!")
     
     @submit_button.event("on_click")
     def on_click_submit(event):
-        if input_box.text.lower() == answer_text.lower():
-            print("correct!!")
+        is_correct = input_box.text.lower() == answer_text.lower()
+        print(is_correct)
+        print(f"got: {input_box.text}")
+        display_result(is_correct)
+
+        if is_correct:
+            display_correct()
         else:
-            print("That is very incorrect")
-        arcade.close_window()
+            display_incorrect()
+          
+    
+
+      
+   
+      
 
     
 
